@@ -224,7 +224,11 @@ angular.module('ui.ace', [])
             return function (e) {
               var newValue = session.getValue();
 
-              if (ngModel && newValue !== ngModel.$viewValue &&
+			  //newValue should never be compared with $viewValue because of updates 
+			  //concurrently happening outside of this scope. 
+			  //Issue reproduction is easy to catch by copy & paste same code in editor, 
+			  //$viewValue became empty and never restores until you make further changes in editor
+              if (ngModel &&
                   // HACK make sure to only trigger the apply outside of the
                   // digest loop 'cause ACE is actually using this callback
                   // for any text transformation !
